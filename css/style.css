@@ -1,0 +1,31 @@
+:root{
+    --color-fondo: #0D6526;
+    --color-contenedor: #8B1E1E;
+    --color-texto: #FFFFFF;
+    --color-texto-correcto: #1DB954;
+    --color-texto-incorrecto: #D62828;
+    --color-boton: #F6C744;           
+    --color-borde: #000000;   
+    --fuente-principal: 'Bangers', sans-serif;
+}
+
+body{
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--fuente-principal);
+    letter-spacing: 1.5px;
+    margin: 0;
+    padding: 0;
+}
+
+.contenedor{
+    background-color: var(--color-contenedor);
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
