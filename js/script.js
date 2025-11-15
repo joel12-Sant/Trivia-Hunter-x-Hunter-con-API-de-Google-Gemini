@@ -1,19 +1,11 @@
+import { temas } from "./temas.js";
+
 const MODELO = "gemini-2.5-flash"; //escogi este modelo porque funciona mejor segun la documentación
 const API_KEY = "AIzaSyAeF-MwthmeChj3E2Kjs2BZ9ZbpbLzxJJo"; //mi api key
 
 //meti todo dentro de una funcion para generar el prompt aleatorio
 function generarPrompt() {
-    // aqui defini los temas
-    const temas = [
-        "personajes principales de Hunter x Hunter",
-        "el examen de cazador",
-        "poderes y tipos de Nen",
-        "la Brigada Fantasma",
-        "Greed Island",
-        "el arco de las Hormigas Quimera",
-        "los zodiacos"
-    ];
-
+    
     // generamos el tema aleatorio
     const temaAleatorio = temas[Math.floor(Math.random() * temas.length)];
 
