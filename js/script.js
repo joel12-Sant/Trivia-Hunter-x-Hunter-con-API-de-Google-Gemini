@@ -42,7 +42,7 @@ function generarPrompt() {
 
   Recuerda: SOLO responde con el objeto JSON, sin texto adicional.`;
 
-  return prompt;
+    return prompt;
 }
 
 // definimos la url para la llamada a la api
@@ -130,6 +130,7 @@ async function cargarPregunta() {
 }
 
 function desplegarPregunta(datosPregunta) {
+    const contenedorPreguntaEl = document.getElementById("contenedor-preguntas");
     const questionEl = document.getElementById("preguntas");
     const optionsEl = document.getElementById("opciones");
 
@@ -142,11 +143,34 @@ function desplegarPregunta(datosPregunta) {
         const boton = document.createElement("button");
         boton.className = "boton-opcion";
         boton.textContent = opcion;
-        // se añade el evento cada que hecemos click
+
         boton.addEventListener("click", () => {
             const esCorrecta =
                 opcion.trim().toLowerCase() ===
                 (datosPregunta.correct_answer || "").trim().toLowerCase();
+
+            const todosLosBotones = optionsEl.querySelectorAll(".boton-opcion");
+
+
+            todosLosBotones.forEach(b => {
+                const opcionDeEsteBoton = b.textContent.trim().toLowerCase();
+                const opcionCorrecta = (datosPregunta.correct_answer || "").trim().toLowerCase();
+
+                if (opcionDeEsteBoton === opcionCorrecta) {
+                    b.classList.add("correcta");
+                } else {
+                    b.classList.add("no-seleccionada");
+                }
+
+                // desactivar para que no se pueda volver a hacer clic
+                b.disabled = true;
+            });
+
+            // 2. Si la que eligió es incorrecta, a esa le ponemos la clase "incorrecta"
+            if (!esCorrecta) {
+                boton.classList.remove("no-seleccionada");
+                boton.classList.add("incorrecta");
+            }
 
             cargarContadores(esCorrecta);
 
@@ -158,13 +182,29 @@ function desplegarPregunta(datosPregunta) {
             const elementoMensaje = document.getElementById("respuesta");
             elementoMensaje.textContent = mensaje + explicacion;
 
-            // cargamos una nueva pregunta
-            cargarPregunta();
+            // creamos el boton para la siguiente pregunta
+            let botonSiguiente = document.getElementById("btn-siguiente");
+            if (!botonSiguiente) {
+                botonSiguiente = document.createElement("button");
+                botonSiguiente.id = "btn-siguiente";
+                botonSiguiente.className = "boton-opcion";
+                botonSiguiente.textContent = "Siguiente pregunta";
+                contenedorPreguntaEl.appendChild(botonSiguiente);
+
+                botonSiguiente.addEventListener("click", () => {
+                    // limpiamos
+                    elementoMensaje.textContent = "";
+                    botonSiguiente.remove();
+                    // cargamos la siguiente pregunta
+                    cargarPregunta();
+                });
+            }
         });
 
         optionsEl.appendChild(boton);
     });
 }
+
 
 // aqui verificamos y actualizamos los contadores
 function cargarContadores(esCorrecta) {

@@ -2,11 +2,11 @@
     --color-fondo: #0D6526;
     --color-contenedor: #8B1E1E;
     --color-texto: #FFFFFF;
-    --color-texto-correcto: #1DB954;
+    --color-texto-correcto: #0D6526;
     --color-texto-incorrecto: #D62828;
     --color-boton: #F6C744;           
     --color-boton-hover: #d9aa24;
-    --color-borde: #000000;   
+    --negro: #000000;   
     --fuente-principal: 'Bangers', sans-serif;
 }
 
@@ -25,8 +25,8 @@ body{
     margin: 50px auto;
     padding: 20px;
     border-radius: 10px;
-    border: 3px solid var(--color-borde);
-    box-shadow: 0 0 10px var(--color-borde);
+    border: 3px solid var(--negro);
+    box-shadow: 0 0 10px var(--negro);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,6 +34,11 @@ body{
 
 .contenedor-datos{
     padding-bottom: 3rem;
+}
+
+.contenedor-pregunta{
+    display: flex;
+    flex-direction: column;
 }
 
 .opciones {
@@ -47,7 +52,8 @@ body{
     font-family: var(--fuente-principal);
     letter-spacing: 1.5px;
     background-color: var(--color-boton);
-    color: var(--color-borde    );
+    color: var(--negro);
+    width: 100%;
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
@@ -59,4 +65,18 @@ body{
 .boton-opcion:hover{
     background-color: var(--color-boton-hover);
     transform: scale(1.01);
+}
+
+.boton-opcion.correcta {
+    background-color: var(--color-texto-correcto);
+    color: var(--color-borde);
+}
+
+.boton-opcion.incorrecta {
+    background-color: var(--color-texto-incorrecto);
+    color: var(--color-texto);
+}
+
+.boton-opcion.no-seleccionada {
+    opacity: 0.5;
 }
