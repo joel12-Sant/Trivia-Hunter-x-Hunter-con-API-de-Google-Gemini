@@ -5,6 +5,7 @@
     --color-texto-correcto: #1DB954;
     --color-texto-incorrecto: #D62828;
     --color-boton: #F6C744;           
+    --color-boton-hover: #d9aa24;
     --color-borde: #000000;   
     --fuente-principal: 'Bangers', sans-serif;
 }
@@ -24,8 +25,38 @@ body{
     margin: 50px auto;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: 3px solid var(--color-borde);
+    box-shadow: 0 0 10px var(--color-borde);
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.contenedor-datos{
+    padding-bottom: 3rem;
+}
+
+.opciones {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.boton-opcion{
+    font-family: var(--fuente-principal);
+    letter-spacing: 1.5px;
+    background-color: var(--color-boton);
+    color: var(--color-borde    );
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.boton-opcion:hover{
+    background-color: var(--color-boton-hover);
+    transform: scale(1.01);
 }

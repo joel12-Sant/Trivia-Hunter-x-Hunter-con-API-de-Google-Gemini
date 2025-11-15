@@ -136,6 +136,7 @@ function desplegarPregunta(datosPregunta) {
     questionEl.className = "preguntas";
     questionEl.textContent = datosPregunta.question || "Pregunta no disponible";
     optionsEl.innerHTML = "";
+    optionsEl.className = "opciones";
 
     (datosPregunta.options || []).forEach((opcion) => {
         const boton = document.createElement("button");
