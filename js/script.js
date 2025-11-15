@@ -240,40 +240,53 @@ function cargarContadores(esCorrecta) {
 }
 
 function avisoLimiteIntentos() {
-    const questionEl = document.getElementById("preguntas");
-    const optionsEl = document.getElementById("opciones");
+    const contenedorPreguntaEl = document.getElementById("contenedor-preguntas"); 
+    const elementoMensaje = document.getElementById("respuesta");                 
+    const botonSiguiente = document.getElementById("btn-siguiente");         
 
-    const elementoMensaje = document.getElementById("respuesta");
-    const botonSiguiente = document.getElementById("btn-siguiente");
+    // quitamos el botón de siguiente pregunta si existe                      
+    if (botonSiguiente) {                                                     
+        botonSiguiente.remove();                                              
+    }                                                                          
 
-    // mensaje que se carga mientras se espera la respuesta
-    questionEl.className = "texto-carga";
-    questionEl.textContent = "Has alcanzado el límite de 3 respuestas incorrectas, tu puntaje máximo se ha guardado";
-    optionsEl.innerHTML = "";
+    const mensajeIncorrectas = document.createElement("p");
+    mensajeIncorrectas.className = "mensaje-limite-intentos";
+    mensajeIncorrectas.textContent =
+        "\n\nHas alcanzado el límite de 3 respuestas incorrectas. Tu puntaje máximo se ha guardado.";
+    // añadimos el texto de que se superaron los tres intentos debajo
+    // de la explicación, sin borrar la pregunta ni las opciones             
+    if (elementoMensaje) {                                                   
+        elementoMensaje.appendChild(mensajeIncorrectas);
+    }                                                                          
 
-    let botonIntentar = document.createElement("button");
-    botonIntentar.className = "boton-opcion";
-    botonIntentar.textContent = "Reiniciar contadores";
-    optionsEl.appendChild(botonIntentar);
+    let botonIntentar = document.getElementById("btn-reiniciar");             
+    if (!botonIntentar) {                                                    
+        botonIntentar = document.createElement("button");
+        botonIntentar.id = "btn-reiniciar";                                  
+        botonIntentar.className = "boton-opcion";
+        botonIntentar.textContent = "Reiniciar contadores y volver a intentar"; 
+        contenedorPreguntaEl.appendChild(botonIntentar);
 
-    botonIntentar.addEventListener("click", () => {
-        correctas = 0;
-        incorrectas = 0;
+        botonIntentar.addEventListener("click", () => {
+            // reiniciamos los contadores en localStorage                     
+            localStorage.setItem("correctas", "0");                           
+            localStorage.setItem("incorrectas", "0");                         
 
-        localStorage.setItem("correctas", "0");
-        localStorage.setItem("incorrectas", "0"); 
+            cargarContadores();  
 
-        cargarContadores();
+            if (elementoMensaje) {                                           
+                elementoMensaje.textContent = "";                            
+            }
+            
+            if (mensajeIncorrectas) {                                 
+                mensajeIncorrectas.remove();                                  
+            }
+            botonIntentar.remove();                                          
 
-        if (elementoMensaje) {                      
-            elementoMensaje.textContent = "";
-        }
-        if (botonSiguiente) {                       
-            botonSiguiente.remove();
-        }
-        // cargamos la siguiente pregunta
-        cargarPregunta();
-    });
+            // cargamos una nueva pregunta                                    
+            cargarPregunta();                                                
+        });
+    }
 }
 
 window.addEventListener("load", () => {

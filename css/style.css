@@ -3,7 +3,7 @@
     --color-contenedor: #8B1E1E;
     --color-texto: #FFFFFF;
     --color-texto-correcto: #0D6526;
-    --color-texto-incorrecto: #D62828;
+    --color-texto-incorrecto: #ce1111;
     --color-boton: #F6C744;           
     --color-boton-hover: #d9aa24;
     --negro: #000000;   
@@ -89,4 +89,12 @@ body{
 
 .boton-opcion.no-seleccionada {
     opacity: 0.5;
+}
+
+.mensaje-limite-intentos {
+    font-size: larger;
+    color: var(--color-boton);
+    font-family: var(--fuente-principal);
+    /*Esta opcion es para el contorno de las letras*/
+    -webkit-text-stroke: 1px black
 }
