@@ -125,6 +125,7 @@ function desplegarPregunta(datosPregunta) {
     const contenedorPreguntaEl = document.getElementById("contenedor-preguntas");
     const questionEl = document.getElementById("preguntas");
     const optionsEl = document.getElementById("opciones");
+    let incorrectas = parseInt(localStorage.getItem("incorrectas") || "0", 10);
 
     questionEl.className = "preguntas";
     questionEl.textContent = datosPregunta.question || "Pregunta no disponible";
@@ -166,6 +167,8 @@ function desplegarPregunta(datosPregunta) {
 
             cargarContadores(esCorrecta);
 
+            incorrectas = parseInt(localStorage.getItem("incorrectas") || "0", 10);
+
             const mensaje = esCorrecta ? "Correcto" : "Incorrecto";
             const explicacion = datosPregunta.explanation
                 ? "\n\nExplicación: " + datosPregunta.explanation
@@ -174,22 +177,27 @@ function desplegarPregunta(datosPregunta) {
             const elementoMensaje = document.getElementById("respuesta");
             elementoMensaje.textContent = mensaje + explicacion;
 
-            // creamos el boton para la siguiente pregunta
-            let botonSiguiente = document.getElementById("btn-siguiente");
-            if (!botonSiguiente) {
-                botonSiguiente = document.createElement("button");
-                botonSiguiente.id = "btn-siguiente";
-                botonSiguiente.className = "boton-opcion";
-                botonSiguiente.textContent = "Siguiente pregunta";
-                contenedorPreguntaEl.appendChild(botonSiguiente);
+            if (incorrectas > 2) {
+                avisoLimiteIntentos();
+            }
+            else {
+                // creamos el boton para la siguiente pregunta
+                let botonSiguiente = document.getElementById("btn-siguiente");
+                if (!botonSiguiente) {
+                    botonSiguiente = document.createElement("button");
+                    botonSiguiente.id = "btn-siguiente";
+                    botonSiguiente.className = "boton-opcion";
+                    botonSiguiente.textContent = "Siguiente pregunta";
+                    contenedorPreguntaEl.appendChild(botonSiguiente);
 
-                botonSiguiente.addEventListener("click", () => {
-                    // limpiamos
-                    elementoMensaje.textContent = "";
-                    botonSiguiente.remove();
-                    // cargamos la siguiente pregunta
-                    cargarPregunta();
-                });
+                    botonSiguiente.addEventListener("click", () => {
+                        // limpiamos
+                        elementoMensaje.textContent = "";
+                        botonSiguiente.remove();
+                        // cargamos la siguiente pregunta
+                        cargarPregunta();
+                    });
+                }
             }
         });
 
@@ -204,18 +212,11 @@ function cargarContadores(esCorrecta) {
     let correctas = parseInt(localStorage.getItem("correctas") || "0", 10);
     let incorrectas = parseInt(localStorage.getItem("incorrectas") || "0", 10);
 
-    if (incorrectas <= 3) {
-        // actalizamos los contadores
-        if (esCorrecta === true) {
-            correctas++;
-        } else if (esCorrecta === false) {
-            incorrectas++;
-        }
-    }
-    else {
-        alert("Has alcanzado el límite de 3 respuestas incorrectas, tu puntaje maximo se guardara y los contadores se reiniciaran.");
-        correctas = 0;
-        incorrectas = 0;
+    // actalizamos los contadores
+    if (esCorrecta === true) {
+        correctas++;
+    } else if (esCorrecta === false) {
+        incorrectas++;
     }
 
     // guardamos de nuevo en localStorage
@@ -228,12 +229,51 @@ function cargarContadores(esCorrecta) {
     const correctasEl = document.getElementById("correctas");
     const incorrectasEl = document.getElementById("incorrectas");
 
+    puntajeMaximoEl.textContent = localStorage.getItem("puntajeMaximo") || "0";
+
     if (correctasEl) {
         correctasEl.textContent = correctas;
     }
     if (incorrectasEl) {
         incorrectasEl.textContent = incorrectas;
     }
+}
+
+function avisoLimiteIntentos() {
+    const questionEl = document.getElementById("preguntas");
+    const optionsEl = document.getElementById("opciones");
+
+    const elementoMensaje = document.getElementById("respuesta");
+    const botonSiguiente = document.getElementById("btn-siguiente");
+
+    // mensaje que se carga mientras se espera la respuesta
+    questionEl.className = "texto-carga";
+    questionEl.textContent = "Has alcanzado el límite de 3 respuestas incorrectas, tu puntaje máximo se ha guardado";
+    optionsEl.innerHTML = "";
+
+    let botonIntentar = document.createElement("button");
+    botonIntentar.className = "boton-opcion";
+    botonIntentar.textContent = "Reiniciar contadores";
+    optionsEl.appendChild(botonIntentar);
+
+    botonIntentar.addEventListener("click", () => {
+        correctas = 0;
+        incorrectas = 0;
+
+        localStorage.setItem("correctas", "0");
+        localStorage.setItem("incorrectas", "0"); 
+
+        cargarContadores();
+
+        if (elementoMensaje) {                      
+            elementoMensaje.textContent = "";
+        }
+        if (botonSiguiente) {                       
+            botonSiguiente.remove();
+        }
+        // cargamos la siguiente pregunta
+        cargarPregunta();
+    });
 }
 
 window.addEventListener("load", () => {

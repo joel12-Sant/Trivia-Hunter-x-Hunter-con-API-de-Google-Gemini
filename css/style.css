@@ -34,7 +34,9 @@ body{
 
 .contenedor-datos{
     display: grid;
-    grid: 2 1;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 10px;
     padding-bottom: 3rem;
 }
 
@@ -50,13 +52,19 @@ body{
     margin-top: 20px;
 }
 
+.puntaje-maximo {
+    text-align: center;
+    grid-column: 1 / 3; 
+    padding: 1rem;
+}
+
 .boton-opcion{
     font-family: var(--fuente-principal);
     letter-spacing: 1.5px;
     background-color: var(--color-boton);
     color: var(--negro);
     width: 100%;
-    border: none;
+    border: solid var(--negro) 2px;
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
