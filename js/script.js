@@ -5,7 +5,7 @@ const API_KEY = "AIzaSyAeF-MwthmeChj3E2Kjs2BZ9ZbpbLzxJJo"; //mi api key
 
 //meti todo dentro de una funcion para generar el prompt aleatorio
 function generarPrompt() {
-    
+
     // generamos el tema aleatorio
     const temaAleatorio = temas[Math.floor(Math.random() * temas.length)];
 
@@ -154,11 +154,11 @@ function desplegarPregunta(datosPregunta) {
                     b.classList.add("no-seleccionada");
                 }
 
-                // desactivar para que no se pueda volver a hacer clic
+                // desactivamos
                 b.disabled = true;
             });
 
-            // 2. Si la que eligió es incorrecta, a esa le ponemos la clase "incorrecta"
+            // si es incorrecta le colocamos la clase
             if (!esCorrecta) {
                 boton.classList.remove("no-seleccionada");
                 boton.classList.add("incorrecta");
@@ -204,18 +204,27 @@ function cargarContadores(esCorrecta) {
     let correctas = parseInt(localStorage.getItem("correctas") || "0", 10);
     let incorrectas = parseInt(localStorage.getItem("incorrectas") || "0", 10);
 
-    // si se llamó con true/false, actualizamos los contadores
-    if (esCorrecta === true) {
-        correctas++;
-    } else if (esCorrecta === false) {
-        incorrectas++;
+    if (incorrectas <= 3) {
+        // actalizamos los contadores
+        if (esCorrecta === true) {
+            correctas++;
+        } else if (esCorrecta === false) {
+            incorrectas++;
+        }
+    }
+    else {
+        alert("Has alcanzado el límite de 3 respuestas incorrectas, tu puntaje maximo se guardara y los contadores se reiniciaran.");
+        correctas = 0;
+        incorrectas = 0;
     }
 
     // guardamos de nuevo en localStorage
+    localStorage.setItem("puntajeMaximo", Math.max(correctas, parseInt(localStorage.getItem("puntajeMaximo") || "0", 10)).toString());
     localStorage.setItem("correctas", correctas.toString());
     localStorage.setItem("incorrectas", incorrectas.toString());
 
-    // actualizamos
+    // actualizamos en el html
+    const puntajeMaximoEl = document.getElementById("puntaje-maximo");
     const correctasEl = document.getElementById("correctas");
     const incorrectasEl = document.getElementById("incorrectas");
 

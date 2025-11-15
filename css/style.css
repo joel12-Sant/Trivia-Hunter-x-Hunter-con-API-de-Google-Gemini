@@ -33,6 +33,8 @@ body{
 }
 
 .contenedor-datos{
+    display: grid;
+    grid: 2 1;
     padding-bottom: 3rem;
 }
 
